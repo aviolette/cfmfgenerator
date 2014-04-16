@@ -13,6 +13,7 @@ public class Market {
   private DateTime end;
   private Location location;
   private final String description;
+  private final String url;
 
   private Market(Builder builder) {
     this.id = builder.id;
@@ -21,6 +22,7 @@ public class Market {
     this.end = builder.end;
     this.location = builder.location;
     this.description = builder.description;
+    this.url = builder.url;
   }
 
   public DateTime getEnd() {
@@ -47,6 +49,10 @@ public class Market {
     return name;
   }
 
+  public String getUrl() {
+    return url;
+  }
+
   public static class Builder {
     private String id;
     private String name;
@@ -54,8 +60,14 @@ public class Market {
     private DateTime start;
     private Location location;
     private String description;
+    private String url;
 
     public Builder() {
+    }
+
+    public Builder url(String url) {
+      this.url = url;
+      return this;
     }
 
     public Builder name(String name) {

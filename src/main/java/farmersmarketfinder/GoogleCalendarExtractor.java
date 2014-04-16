@@ -6,6 +6,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
+import com.google.common.base.Strings;
 import com.google.common.base.Throwables;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
@@ -68,7 +69,20 @@ public class GoogleCalendarExtractor {
         if (location == null) {
           System.err.println("Failed lookup: " + whereString);
         }
+        String url = null;
+        if (description.startsWith("http:")) {
+          int eol = description.indexOf('\n');
+          if (eol != -1) {
+            url = description.substring(0, eol).trim();
+            description = description.substring(eol).trim();
+          } else {
+            url = description.trim();
+            description = null;
+          }
+        }
+        description = Strings.nullToEmpty(description).replaceAll("\n", "<br/>");
         builder.add(Market.builder()
+            .url(url)
             .description(description)
             .name(titleText)
             .location(location)
@@ -102,5 +116,4 @@ public class GoogleCalendarExtractor {
     }
     throw new RuntimeException("Exhausted number of tries");
   }
-
 }

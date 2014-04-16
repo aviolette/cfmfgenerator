@@ -10,6 +10,7 @@ import java.util.Map;
 
 import com.google.common.base.Throwables;
 import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 
 import org.codehaus.jettison.json.JSONArray;
@@ -41,21 +42,14 @@ public class Main {
       marketMap.put(market.getStart().toLocalDate(), market);
     }
 
+    Map<String, Market> nameToMarket = Maps.newHashMap();
+
     for (Map.Entry<LocalDate, Collection<Market>> mapEntry: marketMap.asMap().entrySet()) {
       JSONArray arr = new JSONArray();
       for (Market market : mapEntry.getValue()) {
+        nameToMarket.put(market.getName(), market);
         try {
-          arr.put(new JSONObject()
-              .putOpt("description", market.getDescription())
-              .put("start", market.getStart().getMillis())
-              .put("startFormatted", formatter.print(market.getStart()))
-              .put("endFormatted", formatter.print(market.getEnd()))
-              .put("end", market.getEnd().getMillis())
-              .put("location", new JSONObject()
-                  .put("name", market.getLocation().getName())
-                  .put("lat", market.getLocation().getLat())
-                  .put("lng", market.getLocation().getLng()))
-              .put("name", market.getName())
+          arr.put(marketToJSON(formatter, market)
           );
         } catch (JSONException e) {
           e.printStackTrace();
@@ -73,5 +67,36 @@ public class Main {
         throw Throwables.propagate(e);
       }
     }
+
+    JSONArray allMarkets = new JSONArray();
+    for (Market market : nameToMarket.values()) {
+      try {
+        allMarkets.put(marketToJSON(formatter, market));
+      } catch (JSONException e) {
+        throw Throwables.propagate(e);
+      }
+    }
+    try {
+      BufferedWriter writer = new BufferedWriter(new FileWriter(folder + File.separator + "allmarkets.json"));
+      new JSONObject().put("markets", allMarkets).write(writer);
+      writer.close();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+
+  private static JSONObject marketToJSON(DateTimeFormatter formatter, Market market) throws JSONException {
+    return new JSONObject()
+        .putOpt("description", market.getDescription())
+        .put("start", market.getStart().getMillis())
+        .put("startFormatted", formatter.print(market.getStart()))
+        .put("endFormatted", formatter.print(market.getEnd()))
+        .put("end", market.getEnd().getMillis())
+        .putOpt("url", market.getUrl())
+        .put("location", new JSONObject()
+            .put("name", market.getLocation().getName())
+            .put("lat", market.getLocation().getLat())
+            .put("lng", market.getLocation().getLng()))
+        .put("name", market.getName());
   }
 }
