@@ -8,10 +8,13 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Nullable;
+
 import com.google.common.base.Throwables;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
+import com.google.common.collect.Ordering;
 
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
@@ -68,10 +71,12 @@ public class Main {
       }
     }
 
+    Ordering<String> ordering = Ordering.natural();
+
     JSONArray allMarkets = new JSONArray();
-    for (Market market : nameToMarket.values()) {
+    for (String name : ordering.sortedCopy(nameToMarket.keySet())) {
       try {
-        allMarkets.put(marketToJSON(formatter, market));
+        allMarkets.put(marketToJSON(formatter, nameToMarket.get(name)));
       } catch (JSONException e) {
         throw Throwables.propagate(e);
       }
