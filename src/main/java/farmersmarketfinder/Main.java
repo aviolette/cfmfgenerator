@@ -8,8 +8,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Nullable;
-
 import com.google.common.base.Throwables;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Maps;
@@ -33,8 +31,9 @@ import org.joda.time.format.DateTimeFormatter;
 public class Main {
 
   public static void main(String args[]) {
-    String folder = "/Users/aviolette/dev/cfmf/public/schedules";
-    CachingGeolocator geolocator = new CachingGeolocator(new FoodTruckFinderGeolocator(System.getProperty("appKey")));
+    String folder = args[0], cacheFile = args[1];
+    CachingGeolocator geolocator = new CachingGeolocator(new FoodTruckFinderGeolocator(System.getProperty("appKey")),
+        cacheFile);
     GoogleCalendarExtractor calendarExtractor = new GoogleCalendarExtractor(geolocator);
     DateTimeZone zone = DateTimeZone.forID("America/Chicago");
     Interval range = new Interval(new DateTime(2014, 4, 1, 0, 0, zone), new DateTime(2014, 11, 1, 0, 0, zone));
@@ -88,6 +87,7 @@ public class Main {
     } catch (Exception e) {
       e.printStackTrace();
     }
+    geolocator.save();
   }
 
   private static JSONObject marketToJSON(DateTimeFormatter formatter, Market market) throws JSONException {
