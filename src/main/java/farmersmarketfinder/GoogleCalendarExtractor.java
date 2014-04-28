@@ -48,7 +48,7 @@ public class GoogleCalendarExtractor {
           defaultZone.toTimeZone()));
       query.setMaximumStartTime(new DateTime(range.getEnd().toDate(),
           defaultZone.toTimeZone()));
-      query.setMaxResults(1000);
+      query.setMaxResults(100000);
       query.setStringCustomParameter("singleevents", "true");
       CalendarEventFeed resultFeed = calendarQuery(query);
       for (CalendarEventEntry entry : resultFeed.getEntries()) {
@@ -64,7 +64,7 @@ public class GoogleCalendarExtractor {
           throw new IllegalStateException("No location specified");
         }
         When time = Iterables.getFirst(entry.getTimes(), null);
-        String whereString = where.getValueString();
+        String whereString = where.getValueString().trim();
         Location location = geolocator.locate(whereString);
         if (location == null) {
           System.err.println("Failed lookup: " + whereString);
