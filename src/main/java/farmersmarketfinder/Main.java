@@ -36,7 +36,7 @@ public class Main {
         cacheFile);
     GoogleCalendarExtractor calendarExtractor = new GoogleCalendarExtractor(geolocator);
     DateTimeZone zone = DateTimeZone.forID("America/Chicago");
-    Interval range = new Interval(new DateTime(2014, 4, 1, 0, 0, zone), new DateTime(2014, 11, 1, 0, 0, zone));
+    Interval range = new Interval(new DateTime(2015, 4, 1, 0, 0, zone), new DateTime(2015, 12, 31, 0, 0, zone));
     List<Market> markets = calendarExtractor.findStops(System.getProperty("calendar.feed"), range, zone);
     Multimap<LocalDate, Market> marketMap = ArrayListMultimap.create();
     DateTimeFormatter formatter = DateTimeFormat.forPattern("hh:mm a");
