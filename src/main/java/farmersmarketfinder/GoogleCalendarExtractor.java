@@ -92,7 +92,7 @@ public class GoogleCalendarExtractor {
             System.err.println("Failed lookup: " + where);
           }
           String url = null;
-          if (description.startsWith("http:")) {
+          if (description.startsWith("http")) {
             int eol = description.indexOf('\n');
             if (eol != -1) {
               url = description.substring(0, eol).trim();
