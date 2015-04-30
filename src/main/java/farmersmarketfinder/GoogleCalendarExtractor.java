@@ -85,7 +85,7 @@ public class GoogleCalendarExtractor {
           }
           String where = entry.getLocation();
           if (where == null) {
-            throw new IllegalStateException("No location specified");
+            throw new IllegalStateException("No location specified: "+titleText);
           }
           Location location = geolocator.locate(where);
           if (location == null) {
