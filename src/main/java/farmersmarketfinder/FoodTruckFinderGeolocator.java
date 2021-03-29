@@ -24,7 +24,7 @@ public class FoodTruckFinderGeolocator implements Geolocator {
   public FoodTruckFinderGeolocator(String appKey) {
     Client c = Client.create();
     this.appKey = appKey;
-    this.resource = c.resource("http://www.chicagofoodtruckfinder.com/services/locations");
+    this.resource = c.resource("https://www.chicagofoodtruckfinder.com/services/locations");
   }
 
   @Nullable @Override public Location locate(String name) {

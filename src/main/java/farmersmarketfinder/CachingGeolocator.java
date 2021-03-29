@@ -8,13 +8,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.HashMap;
-import java.util.Map;
 
 import javax.annotation.Nullable;
 
 import com.google.common.base.Throwables;
 import com.google.common.collect.Maps;
-import com.google.common.io.ByteStreams;
 import com.google.common.io.CharStreams;
 
 import org.codehaus.jettison.json.JSONArray;

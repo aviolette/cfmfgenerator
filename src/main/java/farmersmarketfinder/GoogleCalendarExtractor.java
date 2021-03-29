@@ -46,7 +46,7 @@ public class GoogleCalendarExtractor {
           .setServiceAccountId("891347525506-0ktp2j5ll7ifbt766ii64p207q67vjm7@developer.gserviceaccount.com")
           .setServiceAccountScopes(ImmutableList.of("https://www.googleapis.com/auth/calendar"))
           .setServiceAccountPrivateKeyFromP12File(
-              new File("/Users/andrew" + File.separator + ".store" + File.separator + "/google_auth.p12"))
+              new File("/Users/aviolette" + File.separator + ".store" + File.separator + "/google_auth.p12"))
           .build();
     } catch (GeneralSecurityException e) {
       throw Throwables.propagate(e);
@@ -70,7 +70,7 @@ public class GoogleCalendarExtractor {
       do {
         log.info("Performing calendar query");
         Calendar.Events.List query = calendar.events()
-            .list("9umb4esdqgqd4npt319et9u3uk@group.calendar.google.com")
+            .list("35iu8a26gp0spn1h08dc4qddnc@group.calendar.google.com")
             .setSingleEvents(true)
             .setTimeMin(toGoogleDateTime(range.getStart()))
             .setTimeMax(toGoogleDateTime(range.getEnd()))
@@ -83,7 +83,7 @@ public class GoogleCalendarExtractor {
             description = entry.getDescription();
             descriptions.put(titleText, description);
           }
-          String where = entry.getLocation();
+          String where = entry.getLocation() == null ? titleText : entry.getLocation();
           if (where == null) {
             throw new IllegalStateException("No location specified: "+titleText);
           }
